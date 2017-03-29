@@ -4,8 +4,9 @@ function post($request, $mysqli) {
     $username=$request[0];
     $fname=$request[1];
     $lname=$request[2];
-    $email=$request[3];
-    $zip=$request[4];
+	$age=$request[3]
+    $email=$request[4];
+    $zip=$request[5];
     $sql="SELECT id from tbl_users where username='$username'";
     $result = $mysqli->query($sql); echo $mysqli->error;
     if ($result->num_rows > 0) {
@@ -13,9 +14,9 @@ function post($request, $mysqli) {
       http_response_code(404);
     }
     else {
-        $sql = "INSERT into tbl_users (username, firstname, lastname, email, zipcode) VALUES ('$username', '$fname', '$lname','$email','$zip')";
+        $sql = "INSERT into tbl_users (username, firstname, lastname, age, email, zipcode) VALUES ('$username', '$fname','$lname', '$age','$email','$zip')";
         if ($mysqli->query($sql) === TRUE) {
-          echo json_encode(array("username"=>$username,"lastname"=>$lname,"email"=>$email,"zipcode"=>$zip,"action"=>"completed"));
+          echo json_encode(array("username"=>$username,"lastname"=>$lname, "age"=>$age,"email"=>$email,"zipcode"=>$zip,"action"=>"completed"));
         }
         else { http_response_code(404); echo $mysqli->error; }
     }
@@ -32,7 +33,7 @@ function deleter($request, $mysqli){
   if ($result->num_rows > 0) {
     $sql = "DELETE from tbl_users where username='$username'";
     $mysqli->query($sql); echo $mysqli->error;
-    echo json_encode(array("username"=>$username, "action"=>"deleted"));
+    echo json_encode(array("username"=>$username,"lastname"=>$lname, "age"=>$age,"email"=>$email,"zipcode"=>$zip, "action"=>"deleted"));
   }
   else {
     echo "Object doesn't exist!";
